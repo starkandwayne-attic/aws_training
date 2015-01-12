@@ -14,3 +14,12 @@ Requirements
 	-	Ruby 1.9+ (Ruby 2.1+ preferred)
 	-	RubyGems
 	-	[Terraform](https://www.terraform.io/) ([download](https://www.terraform.io/downloads.html)\)
+
+Setup
+-----
+
+```
+git clone https://github.com/starkandwayne/aws_training.git
+cd aws_training
+bundle install
+```
