@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# USAGE: ./fog-account account-folder
+# Then inside the repl:
+# >> compute = Fog::Compute::AWS.new(Fog.credentials.merge("region" => "us-west-2"))
+
+
+TERRAFORM_DIR=${TERRAFORM_DIR:-terraform-aws-cf-install}
+account_folder=$1
+
+if [[ "${account_folder}X" = "X" || ! -d $account_folder ]]; then
+  echo "USAGE: fog-account account-folder"
+  exit 1
+fi
+
+if [[ ! -f $account_folder/$TERRAFORM_DIR/terraform.tfstate ]]; then
+  echo "File $account_folder/$TERRAFORM_DIR/terraform.tfstate is missing; and is required"
+  exit 1
+fi
+
+pushd $account_folder
+  fog -C fog-api.yml
+popd

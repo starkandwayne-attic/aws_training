@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# USAGE: ./bastion-ssh account-folder
+
+TERRAFORM_DIR=${TERRAFORM_DIR:-terraform-aws-cf-install}
+account_folder=$1
+
+if [[ "${account_folder}X" = "X" || ! -d $account_folder ]]; then
+  echo "USAGE: bastion-ssh account-folder"
+  exit 1
+fi
+
+if [[ ! -f $account_folder/$TERRAFORM_DIR/terraform.tfstate ]]; then
+  echo "File $account_folder/$TERRAFORM_DIR/terraform.tfstate is missing; and is required"
+  exit 1
+fi
+
+pushd $account_folder/$TERRAFORM_DIR
+  ssh ubuntu@$(terraform output bastion_ip) -i $(terraform output aws_key_path)
+popd

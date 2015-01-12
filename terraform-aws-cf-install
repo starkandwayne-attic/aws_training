@@ -1,0 +1,21 @@
+#!/bin/bash
+
+account_folder=$1
+if [[ "${account_folder}X" = "X" || ! -d $account_folder ]]; then
+  echo "USAGE: terraform-aws-cf-install account-folder"
+  exit 1
+fi
+
+if [[ ! -f $account_folder/fog-api.yml ]]; then
+  echo "File $account_folder/fog-api.yml is missing; and is required"
+  exit 1
+fi
+
+pushd $account_folder
+rm -rf terraform-aws-cf-install
+git clone https://github.com/cloudfoundry-community/terraform-aws-cf-install &&
+  cd terraform-aws-cf-install &&
+  fog_to_terraform -C ../fog-api.yml &&
+  make plan &&
+  make apply
+popd

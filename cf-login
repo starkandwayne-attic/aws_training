@@ -1,0 +1,20 @@
+#!/bin/bash
+
+TERRAFORM_DIR=${TERRAFORM_DIR:-terraform-aws-cf-install}
+account_folder=$1
+
+if [[ "${account_folder}X" = "X" || ! -d $account_folder ]]; then
+  echo "USAGE: cf-login account-folder"
+  exit 1
+fi
+
+if [[ ! -f $account_folder/$TERRAFORM_DIR/terraform.tfstate ]]; then
+  echo "File $account_folder/$TERRAFORM_DIR/terraform.tfstate is missing; and is required"
+  exit 1
+fi
+
+pushd $account_folder/$TERRAFORM_DIR
+  cf login --skip-ssl-validation \
+      -a $(terraform output cf_api) \
+      -u admin -p $(terraform output cf_admin_pass)
+popd
