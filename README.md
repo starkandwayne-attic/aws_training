@@ -36,16 +36,55 @@ You need to create the following:
 Usage
 -----
 
-To create all the student IAM accounts:
+### Create all the student IAM accounts
 
 ```
 aws_student_accounts create-students -C accounts/students.yml
 ```
 
+This will create a folder `students` and one subfolder per key in `students.yml` for each AWS account.
+
 To verify all the student IAM credentials for their own AWS account (and observe # instances):
 
 ```
 aws_student_accounts verify-credentials -C accounts/students.yml
+```
+
+To clean out all the instances & IP address from all accounts to ensure they are all empty:
+
+```
+aws_student_accounts clean-accounts -C accounts/students.yml
+```
+
+### Bootstrap Cloud Foundry via terraform
+
+```
+./terraform-aws-cf-install student1
+```
+
+Repeat this for each student (sorry, no automation yet).
+
+SUGGESTION: Use `tmux` and create one window per student.
+
+Training helpers
+----------------
+
+### SSH into any student's bastion VM
+
+```
+./bastion-ssh student1
+```
+
+### Interactive REPL for fog for a student
+
+```
+./fog-account student1
+```
+
+### Target Cloud Foundry CLI at student's CF
+
+```
+./cf-login student1
 ```
 
 After training course completed
