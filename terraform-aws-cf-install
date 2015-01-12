@@ -17,7 +17,7 @@ if [[ ! -f $student_account_folder/fog-api.yml ]]; then
 fi
 
 # WEIRD: currently by enabling debug, terraform works on ubuntu
-TF_LOG=1
+export TF_LOG=1
 
 pushd $student_account_folder
 rm -rf terraform-aws-cf-install
