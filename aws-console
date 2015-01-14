@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# USAGE: ./aws-console account
+
+account=$1
+if [[ "${account}X" = "X" ]]; then
+  echo "USAGE: ./aws-console account"
+  exit 1
+fi
+
+
+MASTER_STUDENTS=${MASTER_STUDENTS:-accounts/students.csv}
+TERRAFORM_DIR=${TERRAFORM_DIR:-terraform-aws-cf-install}
+
+if [[ ! -f $MASTER_STUDENTS ]]; then
+  echo "File $MASTER_STUDENTS is missing; and is required (via \$MASTER_STUDENTS)"
+  exit 1
+fi
+
+grep "${account}," $MASTER_STUDENTS
