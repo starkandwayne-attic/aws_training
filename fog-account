@@ -6,7 +6,6 @@
 
 ACCOUNTS_DIR=${ACCOUNTS_DIR:-accounts}
 STUDENTS_DIR=students
-TERRAFORM_DIR=${TERRAFORM_DIR:-terraform-aws-cf-install}
 
 account_folder=$1
 student_account_folder=$STUDENTS_DIR/$account_folder

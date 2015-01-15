@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# USAGE: ./copy-to-student-users
+#
+# For each subfolder, copies the contents into each ~student user and renames "account"
+
+HOME_DIR=${HOME_DIR:-/home}
+
+for student in *
+do
+  student=${student%*/}
+
+  if [[ ! -d $HOME_DIR/$student ]]; then
+    echo "Skipping $student as ~$student has not been created"
+  else
+    echo "Copying to $student to $HOME_DIR/$student/account ..."
+    sudo rm -rf $HOME_DIR/$student/account
+    sudo cp -r -a $student $HOME_DIR/$student/account
+    sudo chown $student:$student -R $HOME_DIR/$student/account
+  fi
+done

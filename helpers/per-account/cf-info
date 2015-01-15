@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# USAGE: ./cf-info
+
+TERRAFORM_DIR=${TERRAFORM_DIR:-terraform-aws-cf-install}
+
+if [[ ! -f $TERRAFORM_DIR/terraform.tfstate ]]; then
+  echo "File $TERRAFORM_DIR/terraform.tfstate is missing; and is required"
+  exit 1
+fi
+
+pushd $TERRAFORM_DIR
+  echo "bastion_ip    = $(terraform output bastion_ip)"
+  echo "aws_key_path  = $(terraform output aws_key_path)"
+  echo ""
+  echo "cf_api        = $(terraform output cf_api)"
+  echo "cf_admin_user = admin"
+  echo "cf_admin_pass = $(terraform output cf_admin_pass)"
+popd

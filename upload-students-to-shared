@@ -1,0 +1,31 @@
+#!/bin/bash
+
+STUDENTS_DIR=students
+TERRAFORM_DIR=${TERRAFORM_DIR:-terraform-aws-cf-install}
+SHARED_ACCOUNT=${SHARED_ACCOUNT:-student1}
+TMP_DIR=${TMP_DIR:-tmp}
+
+shared_account_folder=$STUDENTS_DIR/$SHARED_ACCOUNT
+
+# Copy per-account helper scripts into students' folder
+for dir in students/*/
+do
+  dir=${dir%*/}
+  dir=${dir##*/}
+  cp -a helpers/per-account/* $STUDENTS_DIR/$dir/
+done
+cp -a helpers/copy-to-student-users $STUDENTS_DIR/
+
+mkdir -p $TMP_DIR
+rm -rf $TMP_DIR/students.tar.gz
+tar -zcf $TMP_DIR/students.tar.gz ${STUDENTS_DIR}
+
+pushd $shared_account_folder/terraform-aws-cf-install
+  bastion_ip=$(terraform output bastion_ip)
+  aws_key_path=$shared_account_folder/terraform-aws-cf-install/$(terraform output aws_key_path)
+popd
+
+scp -i ${aws_key_path} \
+  $TMP_DIR/students.tar.gz ubuntu@${bastion_ip}:~/students.tar.gz
+
+ssh  -i ${aws_key_path} ubuntu@${bastion_ip} "cd ~; rm -rf students; tar xfz students.tar.gz; cd students; ./copy-to-student-users"

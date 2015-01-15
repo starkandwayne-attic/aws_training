@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# USAGE: ./fog-account
+# Then inside the repl:
+# >> compute = Fog::Compute::AWS.new(Fog.credentials.merge("region" => "us-west-2"))
+
+if [[ ! -f fog-api.yml ]]; then
+  echo "File fog-api.yml is missing; and is required"
+  exit 1
+fi
+
+echo "Run the following command next:"
+echo 'compute = Fog::Compute::AWS.new(Fog.credentials.merge("region" => "us-west-2"))'
+fog -C fog-api.yml

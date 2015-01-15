@@ -33,6 +33,15 @@ You need to create the following:
 -	`accounts/students.yml` - the YAML file containing AWS credentials for all the AWS accounts
 -	`accounts/signin_urls.yml` - the YAML file containing the signin URL for the IAM student users
 
+Shared bastion
+--------------
+
+One of the accounts in `accounts/students.yml` is assumed to be a shared bastion/jumpbox (to get students off their personal Windows/OS X/Linux laptops and into a machine that has all training software pre-installed).
+
+-	`student1` is the assumed key name in `accounts/students.yml`
+
+Scripts that need to know the account name, such as `upload-students-to-shared` will allow this to be overridden by `$SHARED_ACCOUNT`.
+
 Usage
 -----
 

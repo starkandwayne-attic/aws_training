@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# USAGE: ./bastion-ssh
+
+TERRAFORM_DIR=${TERRAFORM_DIR:-terraform-aws-cf-install}
+
+if [[ ! -f $TERRAFORM_DIR/terraform.tfstate ]]; then
+  echo "File $TERRAFORM_DIR/terraform.tfstate is missing; and is required"
+  exit 1
+fi
+
+pushd $TERRAFORM_DIR
+  ssh ubuntu@$(terraform output bastion_ip) -i $(terraform output aws_key_path)
+popd

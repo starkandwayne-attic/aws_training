@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# USAGE: ./aws-info
+
+if [[ ! -f console-passwords.md ]]; then
+  echo "File console-passwords.md; and is required"
+  exit 1
+fi
+
+cat console-passwords.md
